@@ -1,10 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+{% load static %}
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Распознавание печени</title>
+    <link href="{% static 'detectionApp/css/main.css' %}" rel="stylesheet" type="text/css"/>
 </head>
 <body>
-    <h1>Распознавание печени</h1>
+    <div class="container">
+        <h1>Распознавание печени</h1>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="imageUpload" class="upload-label">Выберите изображение для загрузки:</label>
+            <input type="file" id="imageUpload" name="image" accept="image/*" required>
+            <button type="submit">Распознать</button>
+        </form>
+    </div>
 </body>
 </html>
+
