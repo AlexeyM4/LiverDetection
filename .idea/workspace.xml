@@ -4,19 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8d425acf-c853-492f-b367-f25f1d45b5ef" name="Changes" comment="Commit">
-      <change afterPath="$PROJECT_DIR$/liverdetection/detectionApp/forms.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/liverdetection/detectionApp/static/detectionApp/css/main.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/liverdetection/detectionApp/templates/detectionApp/results.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/liverdetection/livermodel.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/liverdetection/detectionApp/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/liverdetection/detectionApp/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/liverdetection/detectionApp/templates/detectionApp/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/liverdetection/detectionApp/templates/detectionApp/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/liverdetection/detectionApp/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/liverdetection/detectionApp/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/liverdetection/detectionApp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/liverdetection/detectionApp/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/liverdetection/liverdetection/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/liverdetection/liverdetection/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/liverdetection/liverdetection/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/liverdetection/liverdetection/urls.py" afterDir="false" />
-    </list>
+    <list default="true" id="8d425acf-c853-492f-b367-f25f1d45b5ef" name="Changes" comment="Commit" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -104,7 +92,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734262416915</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Commit">
+      <option name="closed" value="true" />
+      <created>1734293138996</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1734293138996</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
