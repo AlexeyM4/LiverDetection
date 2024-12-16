@@ -12,10 +12,10 @@
         <h1>Распознавание печени</h1>
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            <label for="imageUpload" class="upload-label">Выберите изображение для загрузки:</label>
-            <input type="file" id="imageUpload" name="image" accept="image/*" required>
-            <button type="submit">Распознать</button>
-        </form>
+            <label class="upload-label">Выберите изображения для загрузки:</label>
+            {{ form.as_p }}
+        <button type="submit">Распознать</button>
+    </form>
     </div>
 </body>
 </html>

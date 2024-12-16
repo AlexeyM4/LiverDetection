@@ -1,17 +1,22 @@
 from django.shortcuts import render, redirect
 from .forms import ImageUploadForm
+from .models import ImageUpload
 from django.conf import settings
 from livermodel import  LiverModel
 import os
 
 
+liver_model = LiverModel()
+
 def index(request):
     if request.method == 'POST':
         form = ImageUploadForm(request.POST, request.FILES)
         if form.is_valid():
+            images = request.FILES.getlist('image')
+            for image in images:
+                ImageUpload.objects.create(image=image)
 
-            form.save()
-            LiverModel().detection()
+            liver_model.detection()
             return redirect('results')
 
     else:
