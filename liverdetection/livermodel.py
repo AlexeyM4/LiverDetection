@@ -17,6 +17,7 @@ class LiverModel:
 
         self.image_path = os.path.join(settings.MEDIA_ROOT, 'images/')
         self.output_path = os.path.join(settings.MEDIA_ROOT, 'imagesDetection/')
+        self.output_path_overlay = os.path.join(settings.MEDIA_ROOT, 'imagesOverlay/')
 
     def detection(self):
         SIZE_Y = 256
@@ -50,3 +51,19 @@ class LiverModel:
             liver_mask = pw.Image.fromarray((test_prediction * 255).astype(np.uint8))
             liver_mask.save(f"{self.output_path}/{name}")
             liver_mask.close()
+
+            # Загрузка оригинального изображения
+            original_img = cv2.imread(f"{self.image_path}/{name}")
+            original_height, original_width = original_img.shape[:2]
+
+            # Загрузка маски и масштабирование до размеров оригинального изображения
+            mask = cv2.imread(f"{self.output_path}/{name}", cv2.IMREAD_GRAYSCALE)
+            mask = cv2.resize(mask, (original_width, original_height))
+
+            # Нахождение контуров на маске
+            contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+            # Рисование контуров на оригинальном изображении
+            cv2.drawContours(original_img, contours, -1, (0, 255, 0), 2)  # Зелёный цвет для контуров
+
+            cv2.imwrite(f"{self.output_path_overlay}/{name}", original_img)

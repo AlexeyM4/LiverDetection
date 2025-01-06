@@ -6,10 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="8d425acf-c853-492f-b367-f25f1d45b5ef" name="Changes" comment="Commit">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/liverdetection/detectionApp/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/liverdetection/detectionApp/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/liverdetection/detectionApp/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/liverdetection/detectionApp/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/liverdetection/detectionApp/templates/detectionApp/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/liverdetection/detectionApp/templates/detectionApp/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/liverdetection/detectionApp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/liverdetection/detectionApp/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/liverdetection/detectionApp/templates/detectionApp/results.html" beforeDir="false" afterPath="$PROJECT_DIR$/liverdetection/detectionApp/templates/detectionApp/results.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/liverdetection/liverdetection/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/liverdetection/liverdetection/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/liverdetection/livermodel.py" beforeDir="false" afterPath="$PROJECT_DIR$/liverdetection/livermodel.py" afterDir="false" />
     </list>
@@ -53,17 +50,17 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "DefaultHtmlFileTemplate": "HTML File",
-    "Python.mytest.executor": "Run",
-    "Python.urls.executor": "Run",
-    "Python.views.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "master"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;Python.mytest.executor&quot;: &quot;Run&quot;,
+    &quot;Python.urls.executor&quot;: &quot;Run&quot;,
+    &quot;Python.views.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/liverdetection" />
@@ -173,7 +170,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734347658343</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Commit">
+      <option name="closed" value="true" />
+      <created>1734373778429</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1734373778429</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">

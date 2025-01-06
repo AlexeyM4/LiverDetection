@@ -5,16 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="{% static 'detectionApp/css/results.css' %}" rel="stylesheet" type="text/css"/>
-    <title>Распознавание печи</title>
+    <title>Распознавание печени</title>
 </head>
 <body>
     <div class="container">
-        <h1>Распознавание печи</h1>
+        <h1>Распознавание печени</h1>
         <div class="gallery">
             {% for image in images %}
                 <div>
                     <img src="{% static 'detectionApp/media/images/' %}{{ image }}" alt="{{ image }}">
                     <img src="{% static 'detectionApp/media/imagesDetection/' %}{{ image }}" alt="{{ image }}">
+                    <img src="{% static 'detectionApp/media/imagesOverlay/' %}{{ image }}" alt="{{ image }}">
                 </div>
             {% endfor %}
         </div>
