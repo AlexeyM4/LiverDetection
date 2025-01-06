@@ -1,4 +1,2 @@
-![Снимок экрана 2024-12-16 в 23 31 26](https://github.com/user-attachments/assets/11c48f1a-94ad-4199-a88e-56addaefb8a2)
-![Снимок экрана 2024-12-16 в 23 31 43](https://github.com/user-attachments/assets/4da4325b-e9dc-4d86-a49f-704ab5372ac8)
-
- 
+<img width="1440" alt="Снимок экрана 2025-01-06 в 21 18 56" src="https://github.com/user-attachments/assets/43613718-401b-4a7d-a570-830858528027" />
+<img width="1439" alt="Снимок экрана 2025-01-06 в 21 19 24" src="https://github.com/user-attachments/assets/a43c57c2-0dc4-4289-985d-a31557e030bb" />
