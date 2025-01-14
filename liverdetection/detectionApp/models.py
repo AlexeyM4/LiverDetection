@@ -7,5 +7,3 @@ class ImageUpload(models.Model):
 
 
 
-
-

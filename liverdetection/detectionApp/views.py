@@ -32,3 +32,7 @@ def results(request):
                   'detectionApp/results.html',
                   {'images': images})
 
+def edit_page(request, image_name):
+    return render(request,
+                  'detectionApp/edit_page.html',
+                  {'image_name': image_name})

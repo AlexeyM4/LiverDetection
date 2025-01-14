@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'detectionApp/css/edit_page.css' %}" rel="stylesheet" type="text/css"/>
+    <title>Редактирование</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Редактирование</h1>
+        <div class="gallery">
+            <img src="{% static 'detectionApp/media/imagesOverlay/' %}{{ image_name }}" alt="{{ image }}">
+            <img src="{% static 'detectionApp/media/images/' %}{{ image_name }}" alt="{{ image }}" style="display:none;" id="img_{{ image }}">
+            <canvas id="canvas_{{ image }}" width="450" height="450"></canvas>
+        </div>
+        <a href="{% url 'results' %}"><button>Назад</button></a>
+        <button onclick="saveCanvas('{{ image_name }}')">Сохранить</button>
+        <button onclick="undoLastLine('{% static 'detectionApp/media/images/' %}{{ image_name }}')">Отменить последнюю линию</button>
+    </div>
+    <script>
+        document.querySelectorAll('canvas').forEach(canvas => {
+            const ctx = canvas.getContext('2d');
+            const img = document.getElementById('img_' + canvas.id.split('_')[1]);
+            let lines = [];  // Массив для хранения линий
+            let isDrawing = false;
+            let lastX = 0;
+            let lastY = 0;
+
+            img.onload = () => {
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            };
+            img.src = img.src;  // Принудительный вызов onload события
+
+            // Функция рисования
+            function draw(e) {
+                if (!isDrawing) return;
+                ctx.beginPath();
+                ctx.moveTo(lastX, lastY);
+                ctx.lineTo(e.offsetX, e.offsetY);
+                ctx.strokeStyle = 'red';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                // Добавляем новую линию в массив
+                lines.push({ startX: lastX, startY: lastY, endX: e.offsetX, endY: e.offsetY });
+                [lastX, lastY] = [e.offsetX, e.offsetY];
+            }
+
+            canvas.addEventListener('mousedown', (e) => {
+                isDrawing = true;
+                [lastX, lastY] = [e.offsetX, e.offsetY];
+            });
+
+            canvas.addEventListener('mousemove', draw);
+            canvas.addEventListener('mouseup', () => isDrawing = false);
+            canvas.addEventListener('mouseout', () => isDrawing = false);
+
+            // Функция для отмены последней линии
+            window.undoLastLine = function(imageName) {
+                if (lines.length > 0) {
+                    lines.pop();  // Удаляем последнюю линию
+                    redrawCanvas(imageName);  // Перерисовываем канвас
+                }
+            };
+
+
+
+            // Функция для перерисовки канваса
+            function redrawCanvas(imageName) {
+                const canvas = document.getElementById('canvas_' + imageName);
+                const ctx = canvas.getContext('2d');
+                const img = document.getElementById('img_' + imageName);
+                ctx.clearRect(0, 0, canvas.width, canvas.height);  // Очищаем канвас
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);  // Рисуем изображение
+
+                // Перерисовываем все линии
+                lines.forEach(line => {
+                    ctx.beginPath();
+                    ctx.moveTo(line.startX, line.startY);
+                    ctx.lineTo(line.endX, line.endY);
+                    ctx.strokeStyle = 'red';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                });
+            }
+        });
+
+        // Функция для сохранения канваса
+        function saveCanvas(imageName) {
+            const canvas = document.getElementById('canvas_' + imageName);
+            const dataURL = canvas.toDataURL('image/png');
+            const link = document.createElement('a');
+            link.href = dataURL;
+            link.download = imageName.replace('_overlay.png', '_edited.png');
+            link.click();
+        }
+    </script>
+
+
+</body>
+</html>

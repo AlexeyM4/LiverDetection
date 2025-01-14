@@ -12,13 +12,24 @@
         <h1>Распознавание печени</h1>
         <div class="gallery">
             {% for image in images %}
-                <div>
-                    <img src="{% static 'detectionApp/media/images/' %}{{ image }}" alt="{{ image }}">
-                    <img src="{% static 'detectionApp/media/imagesDetection/' %}{{ image }}" alt="{{ image }}">
-                    <img src="{% static 'detectionApp/media/imagesOverlay/' %}{{ image }}" alt="{{ image }}">
+                <div class="image-container">
+                    <div class="image-wrapper">
+                        <img src="{% static 'detectionApp/media/images/' %}{{ image }}" alt="{{ image }}">
+                    </div>
+                    <div class="image-wrapper">
+                        <img src="{% static 'detectionApp/media/imagesDetection/' %}{{ image }}" alt="{{ image }}">
+                    </div>
+                    <div class="image-wrapper">
+                        <img src="{% static 'detectionApp/media/imagesOverlay/' %}{{ image }}" alt="{{ image }}">
+                        <a href="{% url 'edit_page' image %}" class="edit-button">Редактировать</a>
+                    </div>
                 </div>
+            <br>
+            <br>
+            <br>
             {% endfor %}
         </div>
+        <button class="save_button">Скачать</button>
     </div>
 </body>
 </html>
