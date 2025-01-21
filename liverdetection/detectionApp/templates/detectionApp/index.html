@@ -1,22 +1,20 @@
-<!DOCTYPE html>
+{% extends 'detectionApp/nav_bar.html' %}
+
 {% load static %}
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Распознавание печени</title>
+
+{% block params %}
     <link href="{% static 'detectionApp/css/main.css' %}" rel="stylesheet" type="text/css"/>
-</head>
-<body>
+    <title>Главная</title>
+{% endblock %}
+
+{% block content %}
     <div class="container">
         <h1>Распознавание печени</h1>
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <label class="upload-label">Выберите изображения для загрузки:</label>
             {{ form.as_p }}
-        <button type="submit">Распознать</button>
-    </form>
+            <button type="submit">Распознать</button>
+        </form>
     </div>
-</body>
-</html>
-
+{% endblock %}

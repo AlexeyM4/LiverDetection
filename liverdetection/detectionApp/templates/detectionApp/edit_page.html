@@ -12,91 +12,120 @@
         <h1>Редактирование</h1>
         <div class="gallery">
             <img src="{% static 'detectionApp/media/imagesOverlay/' %}{{ image_name }}" alt="{{ image }}">
-            <img src="{% static 'detectionApp/media/images/' %}{{ image_name }}" alt="{{ image }}" style="display:none;" id="img_{{ image }}">
-            <canvas id="canvas_{{ image }}" width="450" height="450"></canvas>
+            <img src="{% static 'detectionApp/media/images/' %}{{ image_name }}"
+                 alt="{{ image }}"
+                 style="display:none;"
+                 id="img_{{ image_name|slugify }}">
+            <canvas id="canvas_{{ image_name|slugify }}" width="450" height="450"></canvas>
         </div>
         <a href="{% url 'results' %}"><button>Назад</button></a>
-        <button onclick="saveCanvas('{{ image_name }}')">Сохранить</button>
-        <button onclick="undoLastLine('{% static 'detectionApp/media/images/' %}{{ image_name }}')">Отменить последнюю линию</button>
+        <button onclick="saveCanvas('{{ image_name|slugify }}', '{{ image_name }}')">Сохранить</button>
+        <button onclick="undoLastLine('{{ image_name|slugify }}')">Отменить последнюю фигуру</button>
     </div>
     <script>
-        document.querySelectorAll('canvas').forEach(canvas => {
-            const ctx = canvas.getContext('2d');
-            const img = document.getElementById('img_' + canvas.id.split('_')[1]);
-            let lines = [];  // Массив для хранения линий
-            let isDrawing = false;
-            let lastX = 0;
-            let lastY = 0;
+        // Хранилище фигур для каждого канваса
+        const canvasFigures = {};
 
+        document.querySelectorAll('canvas').forEach(canvas => {
+            const imageName = canvas.id.split('_')[1];
+            const ctx = canvas.getContext('2d');
+            const img = document.getElementById('img_' + imageName);
+
+            // Фигуры для данного канваса
+            canvasFigures[imageName] = [];
+            let isDrawing = false;
+            let currentFigure = []; // Для хранения точек текущей фигуры
+
+            // Загружаем изображение на канвас
             img.onload = () => {
                 ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
             };
-            img.src = img.src;  // Принудительный вызов onload события
+            img.src = img.src; // Принудительная загрузка
 
-            // Функция рисования
-            function draw(e) {
+            // Функция для начала рисования
+            canvas.addEventListener('mousedown', (e) => {
+                isDrawing = true;
+                currentFigure = []; // Начинаем новую фигуру
+                currentFigure.push({ x: e.offsetX, y: e.offsetY }); // Начальная точка
+            });
+
+            // Функция для рисования
+            canvas.addEventListener('mousemove', (e) => {
                 if (!isDrawing) return;
+                const lastPoint = currentFigure[currentFigure.length - 1];
                 ctx.beginPath();
-                ctx.moveTo(lastX, lastY);
+                ctx.moveTo(lastPoint.x, lastPoint.y);
                 ctx.lineTo(e.offsetX, e.offsetY);
                 ctx.strokeStyle = 'red';
                 ctx.lineWidth = 2;
                 ctx.stroke();
-                // Добавляем новую линию в массив
-                lines.push({ startX: lastX, startY: lastY, endX: e.offsetX, endY: e.offsetY });
-                [lastX, lastY] = [e.offsetX, e.offsetY];
-            }
 
-            canvas.addEventListener('mousedown', (e) => {
-                isDrawing = true;
-                [lastX, lastY] = [e.offsetX, e.offsetY];
+                // Добавляем точку в текущую фигуру
+                currentFigure.push({ x: e.offsetX, y: e.offsetY });
             });
 
-            canvas.addEventListener('mousemove', draw);
-            canvas.addEventListener('mouseup', () => isDrawing = false);
-            canvas.addEventListener('mouseout', () => isDrawing = false);
+            // Функция для завершения рисования
+            canvas.addEventListener('mouseup', () => {
+                if (!isDrawing) return;
+                isDrawing = false;
+                canvasFigures[imageName].push(currentFigure); // Сохраняем фигуру
+            });
 
-            // Функция для отмены последней линии
-            window.undoLastLine = function(imageName) {
-                if (lines.length > 0) {
-                    lines.pop();  // Удаляем последнюю линию
-                    redrawCanvas(imageName);  // Перерисовываем канвас
+            canvas.addEventListener('mouseout', () => {
+                if (isDrawing) {
+                    isDrawing = false;
+                    canvasFigures[imageName].push(currentFigure); // Сохраняем фигуру
                 }
-            };
+            });
+        });
 
+        // Функция для отмены последней фигуры
+        function undoLastLine(imageName) {
+            const canvas = document.getElementById('canvas_' + imageName);
+            const ctx = canvas.getContext('2d');
+            const img = document.getElementById('img_' + imageName);
 
+            if (!canvasFigures[imageName] || canvasFigures[imageName].length === 0) {
+                console.warn('Нет фигур для отмены');
+                return;
+            }
 
-            // Функция для перерисовки канваса
-            function redrawCanvas(imageName) {
-                const canvas = document.getElementById('canvas_' + imageName);
-                const ctx = canvas.getContext('2d');
-                const img = document.getElementById('img_' + imageName);
-                ctx.clearRect(0, 0, canvas.width, canvas.height);  // Очищаем канвас
-                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);  // Рисуем изображение
+            // Удаляем последнюю фигуру
+            canvasFigures[imageName].pop();
 
-                // Перерисовываем все линии
-                lines.forEach(line => {
-                    ctx.beginPath();
-                    ctx.moveTo(line.startX, line.startY);
-                    ctx.lineTo(line.endX, line.endY);
+            // Перерисовываем канвас
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+            // Перерисовываем оставшиеся фигуры
+            canvasFigures[imageName].forEach(figure => {
+                ctx.beginPath();
+                for (let i = 1; i < figure.length; i++) {
+                    const start = figure[i - 1];
+                    const end = figure[i];
+                    ctx.moveTo(start.x, start.y);
+                    ctx.lineTo(end.x, end.y);
                     ctx.strokeStyle = 'red';
                     ctx.lineWidth = 2;
                     ctx.stroke();
-                });
-            }
-        });
+                }
+            });
+        }
 
         // Функция для сохранения канваса
-        function saveCanvas(imageName) {
+        function saveCanvas(imageName, originalName) {
             const canvas = document.getElementById('canvas_' + imageName);
+            if (!canvas) {
+                console.error('Канвас не найден для:', imageName);
+                return;
+            }
+
             const dataURL = canvas.toDataURL('image/png');
             const link = document.createElement('a');
             link.href = dataURL;
-            link.download = imageName.replace('_overlay.png', '_edited.png');
+            link.download = originalName.replace('_overlay.png', '_edited.png');
             link.click();
         }
     </script>
-
-
 </body>
 </html>

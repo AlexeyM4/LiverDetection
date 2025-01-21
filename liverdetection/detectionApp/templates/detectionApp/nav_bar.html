@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'detectionApp/css/nav_bar.css' %}" rel="stylesheet" type="text/css"/>
+    {% block params %}
+    {% endblock %}
+</head>
+<body>
+    <nav class="navbar">
+        <ul class="nav-list">
+            <li class="nav-item"><a href="{% url 'index' %}" class="nav-link {% if request.path == '/' %}active{% endif %}">Главная</a></li>
+            <li class="nav-item"><a href="{% url 'results' %}" class="nav-link {% if request.path == '/results' %}active{% endif %}">Результат</a></li>
+            <li class="nav-item"><a href="{% url 'training' %}" class="nav-link {% if request.path == '/training' %}active{% endif %}">Дообучение</a></li>
+        </ul>
+    </nav>
+    {% block content %}
+    {% endblock %}
+</body>
+</html>

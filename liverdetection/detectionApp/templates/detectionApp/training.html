@@ -1,0 +1,29 @@
+{% extends 'detectionApp/nav_bar.html' %}
+
+{% load static %}
+
+{% block params %}
+    <link href="{% static 'detectionApp/css/training.css' %}" rel="stylesheet" type="text/css"/>
+    <title>Дообучение</title>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        {% for file in files %}
+            <div class="file-item">
+                <div class="file-info">
+                    <img src="{% static 'detectionApp/resources/folder-icon.png' %}" alt="Папка" class="folder-icon">
+                    <span class="file-name">{{ file }}</span>
+                </div>
+                <div class="button-group">
+                    <a href="{% url 'download_folder' file %}?source=training" class="button download-button">Скачать</a>
+                    <form method="post" action="{% url 'delete_file' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="fileName" value="{{ file }}">
+                        <button type="submit" class="button delete-button" onclick="return confirm('Вы уверены, что хотите удалить {{ file }}?')">Удалить</button>
+                    </form>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

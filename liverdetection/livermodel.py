@@ -40,8 +40,6 @@ class LiverModel:
                 img = cv2.merge([img, img, img])
                 test_images[os.path.basename(img_path)] = img
 
-        # test_images = np.array(test_images)
-
         for name in test_images:
             test_img = np.array([test_images[name]])[0]
             test_img_input = np.expand_dims(test_img, 0)

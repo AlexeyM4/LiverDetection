@@ -1,15 +1,14 @@
-<!DOCTYPE html>
+{% extends 'detectionApp/nav_bar.html' %}
+
 {% load static %}
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+{% block params %}
     <link href="{% static 'detectionApp/css/results.css' %}" rel="stylesheet" type="text/css"/>
-    <title>Распознавание печени</title>
-</head>
-<body>
+    <title>Результат</title>
+{% endblock %}
+
+{% block content %}
     <div class="container">
-        <h1>Распознавание печени</h1>
         <div class="gallery">
             {% for image in images %}
                 <div class="image-container">
@@ -21,7 +20,7 @@
                     </div>
                     <div class="image-wrapper">
                         <img src="{% static 'detectionApp/media/imagesOverlay/' %}{{ image }}" alt="{{ image }}">
-                        <a href="{% url 'edit_page' image %}" class="edit-button">Редактировать</a>
+                        <a href="{% url 'edit_page' image %}"><button class="edit-button">Редактировать</button></a>
                     </div>
                 </div>
             <br>
@@ -29,7 +28,11 @@
             <br>
             {% endfor %}
         </div>
-        <button class="save_button">Скачать</button>
+        {% if has_images %}
+
+            <a href="{% url 'download_folder' 'ImagesOverlay' %}?source=results"><button>Скачать</button></a>
+        {% else %}
+            Загрузите снимки в разделе "Главня"
+        {% endif %}
     </div>
-</body>
-</html>
+{% endblock %}
