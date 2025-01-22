@@ -16,7 +16,7 @@
                     <span class="file-name">{{ file }}</span>
                 </div>
                 <div class="button-group">
-                    <a href="{% url 'download_folder' file %}?source=training" class="button download-button">Скачать</a>
+                    <a href="{% url 'download_folder' file %}" class="button download-button">Скачать</a>
                     <form method="post" action="{% url 'delete_file' %}">
                         {% csrf_token %}
                         <input type="hidden" name="fileName" value="{{ file }}">

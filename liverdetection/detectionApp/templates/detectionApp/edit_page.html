@@ -16,11 +16,18 @@
                  alt="{{ image }}"
                  style="display:none;"
                  id="img_{{ image_name|slugify }}">
-            <canvas id="canvas_{{ image_name|slugify }}" width="450" height="450"></canvas>
+            <canvas id="canvas_{{ image_name|slugify }}"></canvas>
         </div>
-        <a href="{% url 'results' %}"><button>Назад</button></a>
-        <button onclick="saveCanvas('{{ image_name|slugify }}', '{{ image_name }}')">Сохранить</button>
-        <button onclick="undoLastLine('{{ image_name|slugify }}')">Отменить последнюю фигуру</button>
+        <div class="button-container">
+            <a href="{% url 'results' %}"><button>Назад</button></a>
+            <form id="saveForm" method="POST" action="{% url 'save_image' %}?img_name={{ image_name }}">
+                {% csrf_token %}
+                <input type="hidden" name="image_name" id="image_name">
+                <input type="hidden" name="image_data" id="image_data">
+                <button type="button" onclick="saveCanvas('{{ image_name|slugify }}')">Сохранить</button>
+            </form>
+            <button onclick="undoLastLine('{{ image_name|slugify }}')">Отменить последнюю фигуру</button>
+        </div>
     </div>
     <script>
         // Хранилище фигур для каждого канваса
@@ -36,32 +43,37 @@
             let isDrawing = false;
             let currentFigure = []; // Для хранения точек текущей фигуры
 
-            // Загружаем изображение на канвас
+            // Настройка размеров canvas под размеры изображения
             img.onload = () => {
-                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                requestAnimationFrame(() => {
+                    canvas.width = img.naturalWidth;
+                    canvas.height = img.naturalHeight;
+                    ctx.drawImage(img, 0, 0);
+                });
             };
-            img.src = img.src; // Принудительная загрузка
 
             // Функция для начала рисования
             canvas.addEventListener('mousedown', (e) => {
                 isDrawing = true;
                 currentFigure = []; // Начинаем новую фигуру
-                currentFigure.push({ x: e.offsetX, y: e.offsetY }); // Начальная точка
+                currentFigure.push(getMousePos(canvas, e)); // Начальная точка
             });
 
             // Функция для рисования
             canvas.addEventListener('mousemove', (e) => {
                 if (!isDrawing) return;
                 const lastPoint = currentFigure[currentFigure.length - 1];
+                const currentPos = getMousePos(canvas, e);
+
                 ctx.beginPath();
                 ctx.moveTo(lastPoint.x, lastPoint.y);
-                ctx.lineTo(e.offsetX, e.offsetY);
+                ctx.lineTo(currentPos.x, currentPos.y);
                 ctx.strokeStyle = 'red';
                 ctx.lineWidth = 2;
                 ctx.stroke();
 
                 // Добавляем точку в текущую фигуру
-                currentFigure.push({ x: e.offsetX, y: e.offsetY });
+                currentFigure.push(currentPos);
             });
 
             // Функция для завершения рисования
@@ -79,6 +91,17 @@
             });
         });
 
+        // Функция для получения координат мыши относительно канваса
+        function getMousePos(canvas, evt) {
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width; // Коэффициент масштабирования по ширине
+            const scaleY = canvas.height / rect.height; // Коэффициент масштабирования по высоте
+            return {
+                x: (evt.clientX - rect.left) * scaleX,
+                y: (evt.clientY - rect.top) * scaleY
+            };
+        }
+
         // Функция для отмены последней фигуры
         function undoLastLine(imageName) {
             const canvas = document.getElementById('canvas_' + imageName);
@@ -95,7 +118,7 @@
 
             // Перерисовываем канвас
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, 0, 0); // Перерисовываем изображение
 
             // Перерисовываем оставшиеся фигуры
             canvasFigures[imageName].forEach(figure => {
@@ -112,19 +135,21 @@
             });
         }
 
-        // Функция для сохранения канваса
-        function saveCanvas(imageName, originalName) {
+        function saveCanvas(imageName) {
             const canvas = document.getElementById('canvas_' + imageName);
             if (!canvas) {
-                console.error('Канвас не найден для:', imageName);
+                console.error('Канвас с ID canvas_' + imageName + ' не найден.');
                 return;
             }
 
             const dataURL = canvas.toDataURL('image/png');
-            const link = document.createElement('a');
-            link.href = dataURL;
-            link.download = originalName.replace('_overlay.png', '_edited.png');
-            link.click();
+
+            // Устанавливаем данные в скрытые поля формы
+            document.getElementById('image_name').value = imageName;
+            document.getElementById('image_data').value = dataURL;
+
+            // Отправляем форму
+            document.getElementById('saveForm').submit();
         }
     </script>
 </body>

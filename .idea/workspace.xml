@@ -5,22 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8d425acf-c853-492f-b367-f25f1d45b5ef" name="Changes" comment="Commit">
-      <change afterPath="$PROJECT_DIR$/liverdetection/detectionApp/static/detectionApp/css/nav_bar.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/liverdetection/detectionApp/static/detectionApp/css/training.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/liverdetection/detectionApp/static/detectionApp/resources/folder-icon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/liverdetection/detectionApp/templates/detectionApp/nav_bar.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/liverdetection/detectionApp/templates/detectionApp/training.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/liverdetection/detectionApp/static/detectionApp/css/edit_page.css" beforeDir="false" afterPath="$PROJECT_DIR$/liverdetection/detectionApp/static/detectionApp/css/edit_page.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/liverdetection/detectionApp/static/detectionApp/css/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/liverdetection/detectionApp/static/detectionApp/css/main.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/liverdetection/detectionApp/static/detectionApp/css/results.css" beforeDir="false" afterPath="$PROJECT_DIR$/liverdetection/detectionApp/static/detectionApp/css/results.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/liverdetection/detectionApp/templates/detectionApp/edit_page.html" beforeDir="false" afterPath="$PROJECT_DIR$/liverdetection/detectionApp/templates/detectionApp/edit_page.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/liverdetection/detectionApp/templates/detectionApp/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/liverdetection/detectionApp/templates/detectionApp/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/liverdetection/detectionApp/templates/detectionApp/results.html" beforeDir="false" afterPath="$PROJECT_DIR$/liverdetection/detectionApp/templates/detectionApp/results.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/liverdetection/detectionApp/templates/detectionApp/training.html" beforeDir="false" afterPath="$PROJECT_DIR$/liverdetection/detectionApp/templates/detectionApp/training.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/liverdetection/detectionApp/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/liverdetection/detectionApp/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/liverdetection/detectionApp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/liverdetection/detectionApp/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/liverdetection/liverdetection/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/liverdetection/liverdetection/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/liverdetection/livermodel.py" beforeDir="false" afterPath="$PROJECT_DIR$/liverdetection/livermodel.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,8 +24,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Python Script" />
         <option value="HTML File" />
+        <option value="Python Script" />
       </list>
     </option>
   </component>
@@ -211,7 +205,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736882370342</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Commit">
+      <option name="closed" value="true" />
+      <created>1737480129655</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1737480129655</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">

@@ -30,7 +30,7 @@
         </div>
         {% if has_images %}
 
-            <a href="{% url 'download_folder' 'ImagesOverlay' %}?source=results"><button>Скачать</button></a>
+            <a href="{% url 'download_results' %}"><button>Скачать</button></a>
         {% else %}
             Загрузите снимки в разделе "Главня"
         {% endif %}

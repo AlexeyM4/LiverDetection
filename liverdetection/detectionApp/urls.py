@@ -9,5 +9,7 @@ urlpatterns = [
     path('training', views.training, name='training'),
 
     path('delete_file', views.delete_file, name='delete_file'),
-    path('download/<str:folder_name>/', views.download_folder, name='download_folder')
+    path('download/<str:folder_name>/', views.download_folder, name='download_folder'),
+    path('save_image/', views.save_image, name='save_image'),
+    path('download_results', views.download_results, name='download_results'),
 ]

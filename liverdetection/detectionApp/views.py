@@ -4,10 +4,14 @@ from .models import ImageUpload
 from django.conf import settings
 from livermodel import  LiverModel
 import os
+import datetime
+import pytz
 from pathlib import Path
 import shutil
 from django.views.decorators.http import require_POST
-
+import base64
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, Http404
 
 liver_model = LiverModel()
@@ -15,7 +19,7 @@ liver_model = LiverModel()
 def index(request):
     if request.method == 'POST':
         for i in ('images', 'imagesDetection', 'imagesOverlay'):
-            path = Path(f'detectionApp/static/detectionApp/media/{i}')
+            path = Path(os.path.join(settings.MEDIA_ROOT, i))
             for item in path.iterdir():
                 if item.is_file():
                     item.unlink()
@@ -64,25 +68,16 @@ def delete_file(request):
 
 
 def download_folder(request, folder_name):
-    page = request.GET.get('source', 'unknown')
-    if page == 'training':
-        folder_path = os.path.join(os.path.join(settings.MEDIA_ROOT, 'training'), folder_name)
-        root_dir = os.path.join(settings.MEDIA_ROOT, 'training')
-    elif page == 'results':
-        folder_path = os.path.join(settings.MEDIA_ROOT, folder_name)
-        root_dir = settings.MEDIA_ROOT
-    else:
-        raise Http404("Папка не найдена")
+    folder_path = os.path.join(os.path.join(settings.MEDIA_ROOT, 'training'), folder_name)
 
     if not os.path.exists(folder_path):
         raise Http404("Папка не найдена")
-
 
     zip_path = os.path.join(settings.MEDIA_ROOT, f"{folder_name}.zip")
     shutil.make_archive(
         base_name=zip_path.replace('.zip', ''),
         format='zip',
-        root_dir=root_dir,
+        root_dir=os.path.join(settings.MEDIA_ROOT, 'training'),
         base_dir=folder_name
     )
 
@@ -93,3 +88,84 @@ def download_folder(request, folder_name):
     os.remove(zip_path)
 
     return response
+
+def download_results(request):
+    folder_path = os.path.join(settings.MEDIA_ROOT, 'ImagesOverlay')
+
+    if not os.path.exists(folder_path):
+        raise Http404("Папка не найдена")
+
+    zip_path = os.path.join(settings.MEDIA_ROOT, f"ImagesOverlay.zip")
+    shutil.make_archive(
+        base_name=zip_path.replace('.zip', ''),
+        format='zip',
+        root_dir=settings.MEDIA_ROOT,
+        base_dir='ImagesOverlay'
+    )
+
+    with open(zip_path, 'rb') as archive:
+        response = HttpResponse(archive, content_type='application/zip')
+        response['Content-Disposition'] = f'attachment; filename="ImagesOverlay.zip"'
+
+    os.remove(zip_path)
+
+    moscow_tz = pytz.timezone('Europe/Moscow')
+    current_time = datetime.datetime.now(moscow_tz)
+
+    formatted_time = current_time.strftime("%Y-%m-%d_%H-%M-%S")
+    folder_name = f'changed_{formatted_time}'
+
+    src_folder = os.path.join(settings.MEDIA_ROOT, 'edited_images')
+    dst_folder = os.path.join(settings.MEDIA_ROOT, 'training', folder_name, 'changed')
+    src_folder_original = os.path.join(settings.MEDIA_ROOT, 'images')
+    dst_folder_original = os.path.join(settings.MEDIA_ROOT, 'training', folder_name, 'original')
+
+    files = [filename for filename in os.listdir(src_folder) if os.path.isfile(os.path.join(src_folder, filename))]
+
+    if len(files) > 0:
+        if not os.path.exists(dst_folder):
+            os.makedirs(dst_folder)
+        if not os.path.exists(dst_folder_original):
+            os.makedirs(dst_folder_original)
+
+        for filename in files:
+            src_file = os.path.join(src_folder, filename)
+            dst_file = os.path.join(dst_folder, filename)
+
+            src_file_original = os.path.join(src_folder_original, filename)
+            dst_file_original = os.path.join(dst_folder_original, filename)
+
+            if os.path.isfile(src_file):
+                shutil.copy(src_file, dst_file)
+                shutil.copy(src_file_original, dst_file_original)
+                os.remove(src_file)
+
+    return response
+
+
+@csrf_exempt
+def save_image(request):
+    if request.method == 'POST':
+        image_name = request.GET.get('img_name', 'unknown')
+        image_data = request.POST.get('image_data', '')
+
+        if not image_data.startswith('data:image/png;base64,'):
+            return JsonResponse({'error': 'Неверный формат изображения'}, status=400)
+
+        image_data = image_data.split(',', 1)[1]
+        image_binary = base64.b64decode(image_data)
+
+        for name in ('edited_images', 'ImagesOverlay'):
+            save_path = os.path.join(settings.MEDIA_ROOT, name, image_name)
+
+            with open(save_path, 'wb') as f:
+                f.write(image_binary)
+
+
+        return redirect('results')
+
+    return JsonResponse({'error': 'Метод не поддерживается'}, status=405)
+
+
+
+
